@@ -31,7 +31,7 @@ app.use('/card', cardRoutes);
 async function start() {
   try {
     await mongoose.connect(
-      "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+      "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop",
       { useNewUrlParser: true }
     );
   
