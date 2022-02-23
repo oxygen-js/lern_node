@@ -30,3 +30,9 @@
   margin-top: 50px;
   font-size: 16px;
 }
+
+.card-action.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
