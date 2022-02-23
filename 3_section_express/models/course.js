@@ -7,12 +7,12 @@ class Course {
         this.logo = logo;
         this.title = title;
         this.price = price;
-        this._id = uuidv4();
+        this.id = uuidv4();
     }
 
     async save() {
         const courses = await Course.getAll();
-        courses.push({ title: this.title, logo: this.logo, price: this.price, _id: this._id });
+        courses.push({ title: this.title, logo: this.logo, price: this.price, _id: this.id });
 
         return new Promise((resolve, reject) => {
             fs.writeFile(
@@ -23,7 +23,7 @@ class Course {
                     resolve(true);
                 }
             )
-        })
+        });
     }
 
     static getAll() {
@@ -36,7 +36,30 @@ class Course {
                     res(JSON.parse(content));
                 }
             )
-        })
+        });
+    }
+
+    static async getById(id) {
+        const courses = await Course.getAll();
+        return courses.find(item => item.id === id);
+    }
+
+    static async update(course) {
+        const courses = await Course.getAll();
+
+        const idx = courses.findIndex(x => x.id === course.id);
+        courses[idx] = course;
+
+        return new Promise((resolve, reject) => {
+            fs.writeFile(
+                path.join(__dirname, "..", "data", "courses.json"),
+                JSON.stringify(courses),
+                (err) => {
+                    if (err) reject(err);
+                    resolve(true);
+                }
+            )
+        });
     }
 }
 
