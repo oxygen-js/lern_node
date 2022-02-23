@@ -44,6 +44,32 @@ class Card {
             )
         });
     }
+
+    static async remove(id) {
+        const card = await Card.get();
+
+        const idx = card.courses.findIndex(x => x.id === id);
+        const course = card.courses[idx];
+
+        if (course.count === 1) {
+            card.courses = card.courses.filter(x => x.id !== id);
+        } else {
+            card.courses[idx].count--;
+        }
+
+        card.all_price -= course.price;
+
+        return new Promise((res, rej) => {
+            fs.writeFile(
+                path.join(__dirname, "..", "data", "card.json"),
+                JSON.stringify(card),
+                (err) => {
+                    if (err) rej(err);
+                    res(card);
+                }
+            )
+        });
+    }
 }
 
 module.exports = Card;

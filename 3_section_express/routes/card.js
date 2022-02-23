@@ -18,8 +18,14 @@ router.get("/", async (req, res) => {
         title: "Card",
         isCard: true,
         courses: card.courses,
-        price: card.price
+        price: card.all_price
     })
-})
+});
+
+router.delete("/remove/:id", async (req, res) => {
+    const card = await Card.remove(req.params.id);
+
+    res.status(200).json(card);
+});
 
 module.exports = router;
