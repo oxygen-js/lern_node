@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 const app = express();
 const hbs = exphds.create({
   defaultLayout: "main",
-  extname: "hbs"
+  extname: "hbs",
 });
 
 app.engine("hbs", hbs.engine);
