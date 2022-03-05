@@ -1,31 +1,36 @@
 const { Router } = require("express");
 const router = Router();
 
-const Card = require("../models/card");
 const Course = require("../models/course");
 
 router.post("/add", async (req, res) => {
-    const course = await Course.getById(req.body.id);
-    await Card.add(course);
+	try {
+		const course = await Course.getById(req.body.id);
+		await req.user.addToCart(course);
 
-    res.redirect("/card");
+		res.redirect("/card");
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 router.get("/", async (req, res) => {
-    const card = await Card.get();
+	// const card = await Card.get();
 
-    res.render("card", {
-        title: "Card",
-        isCard: true,
-        courses: card.courses,
-        price: card.all_price
-    })
+	// res.render("card", {
+	// 	title: "Card",
+	// 	isCard: true,
+	// 	courses: card.courses,
+	// 	price: card.all_price
+	// })
+
+	res.json({test: "test"})
 });
 
 router.delete("/remove/:id", async (req, res) => {
-    const card = await Card.remove(req.params.id);
+	const card = await Card.remove(req.params.id);
 
-    res.status(200).json(card);
+	res.status(200).json(card);
 });
 
 module.exports = router;
