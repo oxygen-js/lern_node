@@ -7,6 +7,7 @@ const addRoutes = require("./routes/add");
 const homeRoutes = require("./routes/home");
 const cardRoutes = require("./routes/card");
 const coursesRoutes = require("./routes/courses");
+const ordersRoutes = require("./routes/orders");
 
 const mongoose = require("mongoose");
 
@@ -36,8 +37,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', homeRoutes);
 app.use('/add', addRoutes);
-app.use('/courses', coursesRoutes);
 app.use('/card', cardRoutes);
+app.use('/orders', ordersRoutes);
+app.use('/courses', coursesRoutes);
 
 async function start() {
   try {
