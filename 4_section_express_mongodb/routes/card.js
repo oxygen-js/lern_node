@@ -1,11 +1,14 @@
 const {Router} = require("express");
 const router = Router();
-
 const Course = require("../models/course");
 
 
 function mapCartItems(cart) {
-  return cart.items.map(x => ({...x.courseId._doc, count: x.count}) );
+  return cart.items.map(x => ({
+    ...x.courseId._doc,
+    count: x.count,
+    id: x.courseId.id
+  }) );
 }
 
 function computePrice(courses) {
@@ -37,7 +40,6 @@ router.get("/", async (req, res) => {
 router.delete("/remove/:id", async (req, res) => {
   await req.user.deleteFromCart(req.params.id);
   const user = await req.user.populate("cart.items.courseId");
-  console.log("USER ===> ", user);
   const courses = mapCartItems(user.cart);
   const cart = { courses, price: computePrice(courses) };
 
