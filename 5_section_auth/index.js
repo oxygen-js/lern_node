@@ -1,7 +1,10 @@
+const URL_DB = "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop";
+
 const path = require("path");
 const express = require("express");
 const exphds = require("express-handlebars");
 const session = require("express-session");
+const MongoStore = require("connect-mongodb-session")(session); 
 
 const addRoutes = require("./routes/add");
 const authRoutes = require("./routes/auth");
@@ -14,10 +17,16 @@ const varMiddleware = require("./middleware/variables");
 
 const mongoose = require("mongoose");
 
+
 const app = express();
 const hbs = exphds.create({
   defaultLayout: "main",
   extname: "hbs",
+});
+
+const store = new MongoStore({
+  collection: "sessions",
+  uri: URL_DB
 });
 
 app.engine("hbs", hbs.engine);
@@ -30,7 +39,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: "some secret value",
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store
 }));
 
 app.use(varMiddleware);
@@ -45,22 +55,9 @@ app.use("/courses", coursesRoutes);
 async function start() {
   try {
     await mongoose.connect(
-      "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop",
+      URL_DB,
       { useNewUrlParser: true }
     );
-
-    /*
-    const candidate = await User.findOne();
-    if (!candidate) {
-      const user = new User({
-        email: "89170777282a@mail.ru",
-        name: "kazak",
-        cart: { items: [] },
-      });
-
-      await user.save();
-    }
-    */
 
     /** Server */
     const PORT = 3000;
