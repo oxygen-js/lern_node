@@ -3,8 +3,6 @@ const express = require("express");
 const exphds = require("express-handlebars");
 const session = require("express-session");
 
-const User = require("./models/user");
-
 const addRoutes = require("./routes/add");
 const authRoutes = require("./routes/auth");
 const homeRoutes = require("./routes/home");
@@ -25,15 +23,6 @@ const hbs = exphds.create({
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", "views");
-
-app.use(async (req, res, next) => {
-  try {
-    req.user = await User.findById("6225bfb6e77d6196dd1ee736");
-    next();
-  } catch (e) {
-    console.log(e);
-  }
-});
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
@@ -60,6 +49,7 @@ async function start() {
       { useNewUrlParser: true }
     );
 
+    /*
     const candidate = await User.findOne();
     if (!candidate) {
       const user = new User({
@@ -70,6 +60,7 @@ async function start() {
 
       await user.save();
     }
+    */
 
     /** Server */
     const PORT = 3000;
