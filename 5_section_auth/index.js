@@ -4,13 +4,13 @@ const exphds = require("express-handlebars");
 const User = require("./models/user");
 
 const addRoutes = require("./routes/add");
+const authRoutes = require("./routes/auth");
 const homeRoutes = require("./routes/home");
 const cardRoutes = require("./routes/card");
-const coursesRoutes = require("./routes/courses");
 const ordersRoutes = require("./routes/orders");
+const coursesRoutes = require("./routes/courses");
 
 const mongoose = require("mongoose");
-
 
 const app = express();
 const hbs = exphds.create({
@@ -29,17 +29,17 @@ app.use(async (req, res, next) => {
   } catch (e) {
     console.log(e);
   }
-
 });
 
-app.use(express.static( path.join(__dirname, "public") ));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', homeRoutes);
-app.use('/add', addRoutes);
-app.use('/card', cardRoutes);
-app.use('/orders', ordersRoutes);
-app.use('/courses', coursesRoutes);
+app.use("/", homeRoutes);
+app.use("/add", addRoutes);
+app.use("/auth", authRoutes);
+app.use("/card", cardRoutes);
+app.use("/orders", ordersRoutes);
+app.use("/courses", coursesRoutes);
 
 async function start() {
   try {
@@ -53,19 +53,19 @@ async function start() {
       const user = new User({
         email: "89170777282a@mail.ru",
         name: "kazak",
-        cart: { items: [] }
-      })
+        cart: { items: [] },
+      });
 
       await user.save();
     }
-  
+
     /** Server */
     const PORT = 3000;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
