@@ -1,11 +1,13 @@
 const path = require("path");
 const express = require("express");
 const exphds = require("express-handlebars");
+const User = require("./models/user");
 
 const addRoutes = require("./routes/add");
 const homeRoutes = require("./routes/home");
 const cardRoutes = require("./routes/card");
 const coursesRoutes = require("./routes/courses");
+const ordersRoutes = require("./routes/orders");
 
 const mongoose = require("mongoose");
 
@@ -20,13 +22,24 @@ app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", "views");
 
+app.use(async (req, res, next) => {
+  try {
+    req.user = await User.findById("6225bfb6e77d6196dd1ee736");
+    next();
+  } catch (e) {
+    console.log(e);
+  }
+
+});
+
 app.use(express.static( path.join(__dirname, "public") ));
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', homeRoutes);
 app.use('/add', addRoutes);
-app.use('/courses', coursesRoutes);
 app.use('/card', cardRoutes);
+app.use('/orders', ordersRoutes);
+app.use('/courses', coursesRoutes);
 
 async function start() {
   try {
@@ -34,9 +47,20 @@ async function start() {
       "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop",
       { useNewUrlParser: true }
     );
+
+    const candidate = await User.findOne();
+    if (!candidate) {
+      const user = new User({
+        email: "89170777282a@mail.ru",
+        name: "kazak",
+        cart: { items: [] }
+      })
+
+      await user.save();
+    }
   
     /** Server */
-    const PORT = process.env.PORT || 3000;
+    const PORT = 3000;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
