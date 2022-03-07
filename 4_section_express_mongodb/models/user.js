@@ -60,4 +60,9 @@ userSchema.methods.deleteFromCart = function(id) {
   return this.save();
 };
 
+userSchema.methods.clearCart = function(id) {
+  this.cart = { items: [] };
+  this.save();
+};
+
 module.exports = model("User", userSchema);
