@@ -34,8 +34,8 @@ if ($card) {
       fetch("/card/remove/" + id, {
         method: "delete",
         headers: {
-          "X-XSRF-TOKEN": csrf
-        }
+          "X-XSRF-TOKEN": csrf,
+        },
       })
         .then((res) => res.json())
         .then((card) => {
@@ -47,7 +47,7 @@ if ($card) {
                     <td>${x.title}</td>
                     <td>${x.count}</td>
                     <td>
-                      <button class="btn btn-small js-remove" data-id="${x.id}">X</button>
+                      <button class="btn btn-small js-remove" data-id="${x.id}" data-csrf="${card.csrf}">X</button>
                     </td>
                   </tr>
                 `;
@@ -55,9 +55,7 @@ if ($card) {
               .join("");
 
             $card.querySelector("tbody").innerHTML = html;
-            $card.querySelector(".price").textContent = toCurrency(
-              card.all_price
-            );
+            $card.querySelector(".price").textContent = toCurrency(card.price);
           } else {
             $card.innerHTML = "<p>Card is empty</p>";
           }

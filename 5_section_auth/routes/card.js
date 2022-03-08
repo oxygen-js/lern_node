@@ -29,7 +29,7 @@ router.delete("/remove/:id", auth, async (req, res) => {
   await req.user.deleteFromCart(req.params.id);
   const user = await req.user.populate("cart.items.courseId");
   const courses = mapCartItems(user.cart);
-  const cart = { courses, price: computePrice(courses) };
+  const cart = { courses, price: computePrice(courses), csrf: req.csrfToken() };
 
   res.status(200).json(cart);
 });
