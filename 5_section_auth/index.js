@@ -15,6 +15,7 @@ const ordersRoutes = require("./routes/orders");
 const coursesRoutes = require("./routes/courses");
 
 const varMiddleware = require("./middleware/variables");
+const userMiddleware = require("./middleware/user");
 
 const mongoose = require("mongoose");
 
@@ -46,6 +47,7 @@ app.use(
 );
 
 app.use(varMiddleware);
+app.use(userMiddleware);
 
 app.use("/", homeRoutes);
 app.use("/add", addRoutes);
