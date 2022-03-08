@@ -7,7 +7,7 @@ const userSchema = new Schema({
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   cart: {
     items: [
@@ -15,21 +15,21 @@ const userSchema = new Schema({
         count: {
           type: Number,
           required: true,
-          default: 1
+          default: 1,
         },
         courseId: {
           type: Schema.Types.ObjectId,
           ref: "Course",
           required: true,
-        }
-      }
-    ]
-  }
+        },
+      },
+    ],
+  },
 });
 
-userSchema.methods.addToCart = function(course) {
+userSchema.methods.addToCart = function (course) {
   const items = [...this.cart.items];
-  const idx = items.findIndex(item => {
+  const idx = items.findIndex((item) => {
     return item.courseId.toString() === course._id.toString();
   });
 
@@ -38,7 +38,7 @@ userSchema.methods.addToCart = function(course) {
   } else {
     items.push({
       courseId: course._id,
-      count: 1
+      count: 1,
     });
   }
 
@@ -46,12 +46,12 @@ userSchema.methods.addToCart = function(course) {
   return this.save();
 };
 
-userSchema.methods.deleteFromCart = function(id) {
+userSchema.methods.deleteFromCart = function (id) {
   let items = [...this.cart.items];
-  const idx = items.findIndex(item => item.courseId.toString() === id);
+  const idx = items.findIndex((item) => item.courseId.toString() === id);
 
   if (items[idx].count === 1) {
-    items = items.filter(x => x.courseId.toString() !== id)
+    items = items.filter((x) => x.courseId.toString() !== id);
   } else {
     items[idx].count--;
   }
@@ -60,7 +60,7 @@ userSchema.methods.deleteFromCart = function(id) {
   return this.save();
 };
 
-userSchema.methods.clearCart = function(id) {
+userSchema.methods.clearCart = function (id) {
   this.cart = { items: [] };
   this.save();
 };

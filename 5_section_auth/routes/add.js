@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 router.get("/", auth, (req, res) => {
   res.render("add", {
     title: "Add course",
-    isAdd: true
+    isAdd: true,
   });
 });
 
@@ -15,7 +15,7 @@ router.post("/", auth, async (req, res) => {
     logo: req.body.logo,
     title: req.body.title,
     price: req.body.price,
-    userId: req.user
+    userId: req.user,
   });
 
   try {
@@ -23,7 +23,7 @@ router.post("/", auth, async (req, res) => {
     res.redirect("/courses");
   } catch (error) {
     console.log(error);
-  }  
+  }
 });
 
 module.exports = router;

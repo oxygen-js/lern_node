@@ -3,21 +3,6 @@ const router = Router();
 const Course = require("../models/course");
 const auth = require("../middleware/auth");
 
-function mapCartItems(cart) {
-  return cart.items.map((x) => ({
-    ...x.courseId._doc,
-    count: x.count,
-    id: x.courseId.id,
-  }));
-}
-
-function computePrice(courses) {
-  return courses.reduce(
-    (total, course) => (total += course.price * course.count),
-    0
-  );
-}
-
 router.get("/", auth, async (req, res) => {
   const user = await req.user.populate("cart.items.courseId");
   const courses = mapCartItems(user.cart);
@@ -48,5 +33,20 @@ router.delete("/remove/:id", auth, async (req, res) => {
 
   res.status(200).json(cart);
 });
+
+function mapCartItems(cart) {
+  return cart.items.map((x) => ({
+    ...x.courseId._doc,
+    count: x.count,
+    id: x.courseId.id,
+  }));
+}
+
+function computePrice(courses) {
+  return courses.reduce(
+    (total, course) => (total += course.price * course.count),
+    0
+  );
+}
 
 module.exports = router;

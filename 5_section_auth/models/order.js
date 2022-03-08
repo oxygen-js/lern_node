@@ -1,30 +1,30 @@
-const {Schema, model} = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const ordersSchema = new Schema({
   courses: [
     {
       course: {
         type: Object,
-        required: true
+        required: true,
       },
       count: {
         type: Number,
-        required: true
-      }
-    }
+        required: true,
+      },
+    },
   ],
   user: {
     name: String,
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true
-    }
+      required: true,
+    },
   },
   date: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = model("Order", ordersSchema);

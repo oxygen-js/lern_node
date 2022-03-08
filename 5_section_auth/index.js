@@ -1,10 +1,11 @@
-const URL_DB = "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop";
+const URL_DB =
+  "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop";
 
 const path = require("path");
 const express = require("express");
 const exphds = require("express-handlebars");
 const session = require("express-session");
-const MongoStore = require("connect-mongodb-session")(session); 
+const MongoStore = require("connect-mongodb-session")(session);
 
 const addRoutes = require("./routes/add");
 const authRoutes = require("./routes/auth");
@@ -17,7 +18,6 @@ const varMiddleware = require("./middleware/variables");
 
 const mongoose = require("mongoose");
 
-
 const app = express();
 const hbs = exphds.create({
   defaultLayout: "main",
@@ -26,7 +26,7 @@ const hbs = exphds.create({
 
 const store = new MongoStore({
   collection: "sessions",
-  uri: URL_DB
+  uri: URL_DB,
 });
 
 app.engine("hbs", hbs.engine);
@@ -36,12 +36,14 @@ app.set("views", "views");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: "some secret value",
-  resave: false,
-  saveUninitialized: false,
-  store
-}));
+app.use(
+  session({
+    secret: "some secret value",
+    resave: false,
+    saveUninitialized: false,
+    store,
+  })
+);
 
 app.use(varMiddleware);
 
@@ -54,18 +56,14 @@ app.use("/courses", coursesRoutes);
 
 async function start() {
   try {
-    await mongoose.connect(
-      URL_DB,
-      { useNewUrlParser: true }
-    );
+    await mongoose.connect(URL_DB, { useNewUrlParser: true });
 
-    /** Server */
     const PORT = 3000;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 }
 

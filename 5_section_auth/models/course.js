@@ -1,22 +1,22 @@
-const {Schema, model} = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const course = new Schema({
-    title: { type: String, required: true }, 
-    price: { type: Number, required: true },
-    logo: String,
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }
+  title: { type: String, required: true },
+  price: { type: Number, required: true },
+  logo: String,
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 course.method("toClient", function () {
-   const course = this.toObject();
+  const course = this.toObject();
 
-   course.id = course._id;
-   delete course._id;
+  course.id = course._id;
+  delete course._id;
 
-   return course;
+  return course;
 });
 
 module.exports = model("Course", course);
