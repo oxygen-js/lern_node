@@ -2,6 +2,7 @@ const URL_DB =
   "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop";
 
 const path = require("path");
+const csrf = require("csurf");
 const express = require("express");
 const exphds = require("express-handlebars");
 const session = require("express-session");
@@ -45,7 +46,7 @@ app.use(
     store,
   })
 );
-
+app.use(csrf());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
