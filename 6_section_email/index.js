@@ -1,5 +1,3 @@
-const URL_DB =
-  "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop";
 
 const path = require("path");
 const csrf = require("csurf");
@@ -19,6 +17,8 @@ const coursesRoutes = require("./routes/courses");
 const varMiddleware = require("./middleware/variables");
 const userMiddleware = require("./middleware/user");
 
+const keys = require("./keys");
+
 const mongoose = require("mongoose");
 
 const app = express();
@@ -29,7 +29,7 @@ const hbs = exphds.create({
 
 const store = new MongoStore({
   collection: "sessions",
-  uri: URL_DB,
+  uri: keys.URL_DB,
 });
 
 app.engine("hbs", hbs.engine);
@@ -41,7 +41,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: "some secret value",
+    secret: keys.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store,
@@ -61,7 +61,7 @@ app.use("/courses", coursesRoutes);
 
 async function start() {
   try {
-    await mongoose.connect(URL_DB, { useNewUrlParser: true });
+    await mongoose.connect(keys.URL_DB, { useNewUrlParser: true });
 
     const PORT = 3000;
     app.listen(PORT, () => {
