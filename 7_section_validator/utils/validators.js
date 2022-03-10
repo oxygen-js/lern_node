@@ -15,21 +15,26 @@ exports.registerValidators = [
       } catch (error) {
         console.log(error);
       }
-    }),
+    })
+    .normalizeEmail(),
 
   body("reg_password", "Minimum password length 6 characters")
     .isLength({ min: 6, max: 56 })
-    .isAlphanumeric(),
+    .isAlphanumeric()
+    .trim(),
 
-  body("reg_password_confirm").custom((value, { req }) => {
-    if (value !== req.body.reg_password) {
-      throw new Error("Passwords do not match");
-    }
+  body("reg_password_confirm")
+    .custom((value, { req }) => {
+      if (value !== req.body.reg_password) {
+        throw new Error("Passwords do not match");
+      }
 
-    return true;
-  }),
+      return true;
+    })
+    .trim(),
 
   body("name")
     .isLength({ min: 3 })
-    .withMessage("Minimum name length 3 characters"),
+    .withMessage("Minimum name length 3 characters")
+    .trim(),
 ];
