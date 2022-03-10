@@ -16,7 +16,7 @@ exports.registerValidators = [
         console.log(error);
       }
     })
-    .normalizeEmail(),
+    .normalizeEmail(),  
 
   body("reg_password", "Minimum password length 6 characters")
     .isLength({ min: 6, max: 56 })
@@ -37,4 +37,15 @@ exports.registerValidators = [
     .isLength({ min: 3 })
     .withMessage("Minimum name length 3 characters")
     .trim(),
+];
+
+exports.courseValidators = [
+  body("title")
+    .isLength({ min: 3 })
+    .withMessage("Minimum name length 3 characters")
+    .trim(),
+
+  body("price").isNumeric().withMessage("Please enter a valid price"),
+
+  body("logo").isURL().withMessage("Please enter a valid link"),
 ];
