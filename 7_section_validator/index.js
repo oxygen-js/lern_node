@@ -16,6 +16,7 @@ const coursesRoutes = require("./routes/courses");
 
 const varMiddleware = require("./middleware/variables");
 const userMiddleware = require("./middleware/user");
+const errorHandlerMiddleware = require("./middleware/error");
 
 const keys = require("./keys");
 
@@ -58,6 +59,8 @@ app.use("/auth", authRoutes);
 app.use("/card", cardRoutes);
 app.use("/orders", ordersRoutes);
 app.use("/courses", coursesRoutes);
+
+app.use(errorHandlerMiddleware);
 
 async function start() {
   try {
