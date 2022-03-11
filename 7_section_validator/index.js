@@ -1,4 +1,3 @@
-
 const path = require("path");
 const csrf = require("csurf");
 const flash = require("connect-flash");
@@ -13,6 +12,7 @@ const homeRoutes = require("./routes/home");
 const cardRoutes = require("./routes/card");
 const ordersRoutes = require("./routes/orders");
 const coursesRoutes = require("./routes/courses");
+const profileRoutes = require("./routes/profile");
 
 const varMiddleware = require("./middleware/variables");
 const userMiddleware = require("./middleware/user");
@@ -59,6 +59,7 @@ app.use("/auth", authRoutes);
 app.use("/card", cardRoutes);
 app.use("/orders", ordersRoutes);
 app.use("/courses", coursesRoutes);
+app.use("/profile", profileRoutes);
 
 app.use(errorHandlerMiddleware);
 
