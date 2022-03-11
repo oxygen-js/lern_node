@@ -3,6 +3,7 @@ const csrf = require("csurf");
 const helmet = require("helmet");
 const express = require("express");
 const flash = require("connect-flash");
+const compression = require("compression");
 const session = require("express-session");
 const exphds = require("express-handlebars");
 const MongoStore = require("connect-mongodb-session")(session);
@@ -55,6 +56,7 @@ app.use(fileMiddleware.single("avatar"));
 app.use(csrf());
 app.use(flash());
 app.use(helmet());
+app.use(compression());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
