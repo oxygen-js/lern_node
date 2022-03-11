@@ -1,5 +1,5 @@
-module.exports = {
-  URL_DB:
-    "mongodb+srv://kazak_admin_helol:ISnfNsRJElNkAtb6@cluster0.tjxko.mongodb.net/shop",
-  SESSION_SECRET: "some secret value",
-};
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./keys.prod");
+} else {
+  module.exports = require("./keys.dev");
+}
