@@ -1,13 +1,13 @@
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
-const port = process.env.PORT || 8080;
 const sequelize = require("./utils/database");
+const routerTodo = require("./routes/todo");
+const app = express();
 
 app.use(bodyParser.json());
 
 app.use(express.static(__dirname + "/dist/"));
-
+app.use("/api/todo", routerTodo);
 app.get("/api/status", function (req, res) {
   res.status(200).json({ status: "UP" });
 });
@@ -15,8 +15,8 @@ app.get("/api/status", function (req, res) {
 async function start() {
   try {
     await sequelize.sync();
-    app.listen(port, () =>
-      console.log(`listening on http://localhost:${port}`)
+    app.listen(process.env.PORT || 8080, () =>
+      console.log(`listening on http://localhost:${process.env.PORT || 8080}`)
     );
   } catch (error) {
     console.log("Connect error in DB - ", error);

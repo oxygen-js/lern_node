@@ -1,30 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { StatusService } from './shared/status.service';
+import {Component, OnInit} from '@angular/core';
+import {map, observable, Observable, Subject} from 'rxjs';
+import {StatusService, todo} from './shared/status.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  title = 'rest-api';
-  status = 'DOWN';
+export class AppComponent implements OnInit {
+  todoName = "";
+  todos!: {todos: todo[]};
 
-  private readonly _destroyed$ = new Subject();
-
-  constructor(private _statusService: StatusService) {}
-
-  ngOnInit(): void {
-    this._statusService
-      .getStatus()
-      .pipe(distinctUntilChanged(), takeUntil(this._destroyed$))
-      .subscribe((x) => console.log(x));
+  constructor(private _statusService: StatusService) {
   }
 
-  ngOnDestroy(): void {
-    this._destroyed$.next("");
-    this._destroyed$.complete();
+  ngOnInit(): void {
+    this._statusService.getTodos().subscribe(x => this.todos = x);
+    console.log(this.todos)
+  }
+
+  create() {
+    this._statusService.createTodo(this.todoName.trim())
+      .pipe(map(x => x.todo))
+      .subscribe(x => this.todos.todos.push(x));
   }
 }

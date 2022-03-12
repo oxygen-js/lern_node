@@ -1,1 +1,12 @@
 <h1>Hello MEAN</h1>
+
+<ul>
+  <li *ngFor="let item of todos.todos">
+    {{item.title}}
+  </li>
+</ul>
+
+<input placeholder="label" [(ngModel)]="todoName" />
+
+<button (click)="create()">Create</button>
+
