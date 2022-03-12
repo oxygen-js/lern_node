@@ -1,16 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const sequelize = require("./utils/database");
-const routerTodo = require("./routes/todo");
 const app = express();
+
+const {graphqlHTTP} = require("express-graphql");
+const schema = require("./graphql/schema");
+const resolver = require("./graphql/resolver");
 
 app.use(bodyParser.json());
 
 app.use(express.static(__dirname + "/dist/"));
-app.use("/api/todo", routerTodo);
-app.get("/api/status", function (req, res) {
-  res.status(200).json({ status: "UP" });
-});
+app.use(graphqlHTTP({
+  schema,
+  rootValue: resolver,
+  graphiql: true
+}));
+
 
 async function start() {
   try {
